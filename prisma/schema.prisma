@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Creator {
+  databaseId Int       @id @default(autoincrement()) @map("id")
+  Article    Article[]
+
+  @@map("creators")
+}
+
+model Article {
+  databaseId Int     @id @default(autoincrement()) @map("id")
+  creatorId  Int     @map("creator_id")
+  creator    Creator @relation(fields: [creatorId], references: [databaseId])
+
+  @@map("articles")
+}
